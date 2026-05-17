@@ -15,7 +15,10 @@ COPY --from=go-builder /build/fetch_menu /usr/local/bin/fetch_menu
 
 RUN apk add --no-cache curl tar && \
     curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
-      | tar -C /usr/local/bin -xz hugo && \
+      -o /tmp/hugo.tar.gz && \
+    tar -xzf /tmp/hugo.tar.gz -C /tmp/ && \
+    mv /tmp/hugo /usr/local/bin/hugo && \
+    rm /tmp/hugo.tar.gz && \
     hugo version && \
     apk del curl tar
 
