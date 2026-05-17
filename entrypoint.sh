@@ -10,8 +10,8 @@ fetch_menu -cache-dir "$CACHE_DIR"
 echo "[menuplan] Building Hugo site..."
 hugo --minify -d "$OUT_DIR"
 
-echo "[menuplan] Starting crond..."
-crond -l 2
+echo "[menuplan] Starting cron..."
+service cron start
 
 echo "[menuplan] Starting nginx..."
 exec nginx -g 'daemon off;'

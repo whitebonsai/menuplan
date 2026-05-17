@@ -13,7 +13,7 @@ ARG TARGETARCH=amd64
 # Binaries
 COPY --from=go-builder /build/fetch_menu /usr/local/bin/fetch_menu
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl tar && \
+RUN apt-get update && apt-get install -y --no-install-recommends curl tar cron && \
     curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
       -o /tmp/hugo.tar.gz && \
     tar -xzf /tmp/hugo.tar.gz -C /tmp/ && \
@@ -30,8 +30,8 @@ WORKDIR /site
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Cron job: rebuild every Monday at 06:00
-RUN echo "0 6 * * 1 cd /site && fetch_menu -cache-dir /cache && hugo --minify -d /usr/share/nginx/html 2>&1 | logger -t menuplan" \
-      > /etc/crontabs/root
+RUN echo "0 6 * * 1 root cd /site && fetch_menu -cache-dir /cache && hugo --minify -d /usr/share/nginx/html 2>&1 | logger -t menuplan" \
+      > /etc/cron.d/menuplan && chmod 644 /etc/cron.d/menuplan
 
 # Entrypoint
 COPY entrypoint.sh /entrypoint.sh
