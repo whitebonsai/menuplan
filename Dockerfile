@@ -4,23 +4,22 @@ WORKDIR /build
 COPY fetch_menu.go .
 RUN go build -ldflags="-s -w" -o fetch_menu fetch_menu.go
 
+# ── Stage 2: Download Hugo ────────────────────────────────────────────────────
+FROM debian:bookworm-slim AS hugo-downloader
+ARG HUGO_VERSION=0.159.1
+ARG TARGETARCH
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates && \
+    curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
+      | tar -xz -C /usr/local/bin hugo
+
 # ── Stage 3: Final image ──────────────────────────────────────────────────────
 FROM nginx:1.27
 
-ARG HUGO_VERSION=0.159.1
-ARG TARGETARCH=amd64
-
-# Binaries
 COPY --from=go-builder /build/fetch_menu /usr/local/bin/fetch_menu
+COPY --from=hugo-downloader /usr/local/bin/hugo /usr/local/bin/hugo
 
-RUN apt-get update && apt-get install -y --no-install-recommends curl tar cron && \
-    curl -fsSL "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_linux-${TARGETARCH}.tar.gz" \
-      -o /tmp/hugo.tar.gz && \
-    tar -xzf /tmp/hugo.tar.gz -C /tmp/ && \
-    mv /tmp/hugo /usr/local/bin/hugo && \
-    rm /tmp/hugo.tar.gz && \
-    hugo version && \
-    apt-get purge -y curl && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends cron && \
+    rm -rf /var/lib/apt/lists/*
 
 # Site source
 COPY . /site
