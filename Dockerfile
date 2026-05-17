@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl tar && \
     mv /tmp/hugo /usr/local/bin/hugo && \
     rm /tmp/hugo.tar.gz && \
     hugo version && \
-    apt-get remove -y curl tar && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+    apt-get purge -y curl && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
 # Site source
 COPY . /site
