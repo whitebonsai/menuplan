@@ -1,11 +1,8 @@
 services:
   menuplan:
-    image: ghcr.io/$GITHUB_REPOSITORY:latest
+    image: ghcr.io/whitebonsai/menuplan:latest
     restart: unless-stopped
     ports:
       - "8080:80"
     volumes:
-      - cache:/cache
-
-volumes:
-  cache:
+      - /opt/menuplan/cache:/cache
