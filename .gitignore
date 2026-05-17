@@ -1,0 +1,6 @@
+public/
+cache/
+resources/
+data/
+.hugo_build.lock
+fetch_menu

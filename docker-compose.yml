@@ -1,0 +1,11 @@
+services:
+  menuplan:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - cache:/cache
+
+volumes:
+  cache:

@@ -1,0 +1,103 @@
+{{- define "main" }}
+
+{{- $today  := now.Format "2006-01-02" }}
+{{- $data   := hugo.Data.weeks }}
+
+<div class="menu-header">
+  <div class="week-nav">
+    <button class="week-btn" id="btn-prev" aria-label="Vorherige Woche">&#8592;</button>
+    <h2 class="week-title" id="week-title"></h2>
+    <button class="week-btn" id="btn-next" aria-label="Nächste Woche">&#8594;</button>
+  </div>
+</div>
+
+{{- range $data.weeks }}
+<div class="week-panel" id="week-{{ .monday }}" hidden>
+  <div class="menu-grid">
+    {{- range .days }}
+    {{- $isToday := eq .date $today }}
+    <article class="menu-card{{ if $isToday }} menu-card-today{{ end }}">
+
+      <header class="menu-card-header">
+        <div>
+          <span class="weekday">{{ .weekday }}</span>
+          <span class="menu-date">{{ .dateFormatted }}</span>
+        </div>
+        {{- if $isToday }}<span class="today-badge">Heute</span>{{- end }}
+      </header>
+
+      <div class="menu-card-body">
+
+        {{- with .main }}
+        <div class="dish">
+          <span class="dish-pill dish-pill-main">Menü</span>
+          <h2 class="dish-name">{{ .name }}</h2>
+          <div class="badges">
+            {{- if .isVegan }}<span class="badge badge-vegan">Vegan</span>{{- end }}
+            {{- if .isBalanced }}<span class="badge badge-balanced">Ausgewogen</span>{{- end }}
+          </div>
+          <span class="climate-pill" style="--climate-color: {{ .climate.color }}">{{ .climate.tempChange }}°C · {{ .climate.label }}</span>
+          {{- if .allergens }}
+          <div class="allergens"><span class="allergen-label">Allergene:</span> {{ delimit .allergens ", " }}</div>
+          {{- end }}
+        </div>
+        {{- end }}
+
+        {{- if and .main .vegi }}<hr class="dish-divider">{{- end }}
+
+        {{- with .vegi }}
+        <div class="dish">
+          <span class="dish-pill dish-pill-vegi">Vegi</span>
+          <h2 class="dish-name">{{ .name }}</h2>
+          <div class="badges">
+            {{- if .isVegan }}<span class="badge badge-vegan">Vegan</span>{{- end }}
+            {{- if .isBalanced }}<span class="badge badge-balanced">Ausgewogen</span>{{- end }}
+          </div>
+          <span class="climate-pill" style="--climate-color: {{ .climate.color }}">{{ .climate.tempChange }}°C · {{ .climate.label }}</span>
+          {{- if .allergens }}
+          <div class="allergens"><span class="allergen-label">Allergene:</span> {{ delimit .allergens ", " }}</div>
+          {{- end }}
+        </div>
+        {{- end }}
+
+      </div>
+    </article>
+    {{- end }}
+  </div>
+</div>
+{{- end }}
+
+<script>
+(function () {
+  const weeks = {{ $data.weeks | jsonify | safeJS }};
+  const defaultWeek = {{ $data.currentWeek }};
+  const mondays = weeks.map(w => w.monday);
+
+  let idx = mondays.indexOf(defaultWeek);
+  if (idx === -1) idx = 0;
+
+  function show(i) {
+    // hide all
+    mondays.forEach(m => {
+      const el = document.getElementById('week-' + m);
+      if (el) el.hidden = true;
+    });
+    // show target
+    const panel = document.getElementById('week-' + mondays[i]);
+    if (panel) panel.hidden = false;
+    // update title
+    document.getElementById('week-title').textContent = weeks[i].title;
+    // update button states
+    document.getElementById('btn-prev').disabled = i === 0;
+    document.getElementById('btn-next').disabled = i === mondays.length - 1;
+    idx = i;
+  }
+
+  document.getElementById('btn-prev').addEventListener('click', () => { if (idx > 0) show(idx - 1); });
+  document.getElementById('btn-next').addEventListener('click', () => { if (idx < mondays.length - 1) show(idx + 1); });
+
+  show(idx);
+})();
+</script>
+
+{{- end }}

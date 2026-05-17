@@ -1,0 +1,20 @@
+baseURL = "/"
+languageCode = "de"
+title = "Was gits ir Kantine?"
+theme = "PaperMod"
+
+[params]
+  defaultTheme = "auto"
+  ShowReadingTime = false
+  ShowShareButtons = false
+  ShowPostNavLinks = false
+  ShowBreadCrumbs = false
+  ShowCodeCopyButtons = false
+  homeInfoParams = { Title = "Wochemenü", Content = "SBB Cafeteria Ostermundigen" }
+
+[menu]
+  [[menu.main]]
+    identifier = "menu"
+    name = "Menü"
+    url = "/"
+    weight = 10

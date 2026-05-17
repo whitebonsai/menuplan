@@ -1,0 +1,252 @@
+/* Break out of PaperMod's narrow content column */
+.main {
+  max-width: 100% !important;
+  padding: 1rem 2rem 3rem !important;
+}
+
+/* ── Header & nav ── */
+.menu-header {
+  margin-bottom: 1.5rem;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.week-title {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.7;
+  margin: 0;
+  min-width: 200px;
+  text-align: center;
+}
+
+.week-btn {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.35rem 0.75rem;
+  transition: background 0.15s, opacity 0.15s;
+}
+
+.week-btn:hover:not(:disabled) {
+  background: var(--border);
+}
+
+.week-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+/* ── Grid ── */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+  min-width: 0;
+}
+
+/* ── Card ── */
+.menu-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--entry);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  transition: box-shadow 0.15s;
+}
+
+.menu-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.menu-card-today {
+  border-color: var(--primary);
+  border-width: 2px;
+}
+
+/* ── Card header ── */
+.menu-card-header {
+  padding: 0.75rem 1rem 0.65rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.menu-card-today .menu-card-header {
+  background: var(--primary);
+}
+
+.menu-card-today .weekday,
+.menu-card-today .menu-date {
+  color: var(--theme);
+}
+
+.weekday {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.menu-date {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.5;
+  margin-top: 2px;
+}
+
+.today-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: var(--theme);
+  color: var(--primary);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* ── Card body ── */
+.menu-card-body {
+  padding: 0.85rem 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+/* ── Dish section ── */
+.dish {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.dish-pill {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  align-self: flex-start;
+}
+
+.dish-pill-main {
+  background: rgba(234, 179, 8, 0.15);
+  color: #ca8a04;
+}
+
+[data-theme=dark] .dish-pill-main {
+  background: rgba(234, 179, 8, 0.2);
+  color: #fbbf24;
+}
+
+.dish-pill-vegi {
+  background: rgba(5, 150, 105, 0.15);
+  color: #059669;
+}
+
+[data-theme=dark] .dish-pill-vegi {
+  background: rgba(5, 150, 105, 0.2);
+  color: #34d399;
+}
+
+.dish-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0.1rem 0;
+}
+
+/* ── Dish name ── */
+.dish-name {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0;
+  border: none;
+  padding: 0;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* ── Badges ── */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.badges:empty {
+  display: none;
+}
+
+.badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badge-vegan    { background: #bbf7d0; color: #15803d; }
+.badge-balanced { background: #dbeafe; color: #1d4ed8; }
+
+/* ── Climate pill ── */
+.climate-pill {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--climate-color, #94a3b8);
+  background: color-mix(in srgb, var(--climate-color, #94a3b8) 12%, transparent);
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ── Allergens ── */
+.allergens {
+  font-size: 0.68rem;
+  opacity: 0.4;
+  line-height: 1.5;
+  margin-top: auto;
+}
+
+.allergen-label {
+  font-weight: 600;
+}
+
+/* ── Empty state ── */
+.no-menu {
+  text-align: center;
+  padding: 3rem;
+  opacity: 0.5;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .menu-grid {
+    grid-template-columns: repeat(5, minmax(200px, 1fr));
+    overflow-x: auto;
+  }
+  .main {
+    padding: 1rem 1rem 3rem !important;
+  }
+}
